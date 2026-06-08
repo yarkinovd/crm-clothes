@@ -1,12 +1,14 @@
 const { Pool } = require('pg');
 
-const pool = new Pool({
-  user:     process.env.PGUSER     || 'crmuser',
-  host:     process.env.PGHOST     || 'db',
-  database: process.env.PGDATABASE || 'crmdb',
-  password: process.env.PGPASSWORD || 'crmpassword',
-  port:     parseInt(process.env.PGPORT) || 5432,
-});
+const pool = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
+  : new Pool({
+      user:     process.env.PGUSER     || 'crmuser',
+      host:     process.env.PGHOST     || 'db',
+      database: process.env.PGDATABASE || 'crmdb',
+      password: process.env.PGPASSWORD || 'crmpassword',
+      port:     parseInt(process.env.PGPORT) || 5432,
+    });
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

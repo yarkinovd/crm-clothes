@@ -262,16 +262,21 @@ app.post('/api/customers/register', async (req, res) => {
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 
-const start = async () => {
-  try {
-    await initDB();
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`CRM server running on port ${PORT}`);
-    });
-  } catch (err) {
-    console.error('Failed to start server:', err.message);
-    process.exit(1);
-  }
-};
+if (require.main === module) {
+  const start = async () => {
+    try {
+      await initDB();
+      app.listen(PORT, '0.0.0.0', () => {
+        console.log(`CRM server running on port ${PORT}`);
+      });
+    } catch (err) {
+      console.error('Failed to start server:', err.message);
+      process.exit(1);
+    }
+  };
+  start();
+} else {
+  initDB().catch(err => console.error('DB init failed:', err.message));
+}
 
-start();
+module.exports = app;
