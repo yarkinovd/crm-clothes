@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — CRM Clothes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-sm">
+
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 font-black text-2xl text-white shadow-lg shadow-indigo-500/30">C</div>
+      <h1 class="text-2xl font-extrabold text-white">Admin Panel</h1>
+      <p class="text-slate-400 text-sm mt-1">CRM Clothes — B2B Platform</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-2xl p-7">
+
+      <div id="login-error"
+        class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium mb-5"></div>
+
+      <form onsubmit="doLogin(event)" class="space-y-5" novalidate>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
+          <input type="email" id="login-email" placeholder="admin@gmail.com" autocomplete="email"
+            class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Parol</label>
+          <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"
+            class="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+        </div>
+
+        <button type="submit" id="login-btn"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-sm font-bold transition-colors shadow-sm">
+          Kirish
+        </button>
+
+      </form>
+
+      <a href="/store.html"
+        class="block text-center text-sm text-slate-400 hover:text-indigo-600 mt-5 transition-colors font-medium">
+        ← Do'konga qaytish
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    if (localStorage.getItem('crm_admin_token')) {
+      window.location.href = '/';
+    }
+
+    async function doLogin(e) {
+      e.preventDefault();
+
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const errorEl  = document.getElementById('login-error');
+      const btn      = document.getElementById('login-btn');
+
+      errorEl.classList.add('hidden');
+
+      if (!email || !password) {
+        errorEl.textContent = 'Email va parol kiritish majburiy.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.textContent = 'Tekshirilmoqda…';
+      btn.disabled    = true;
+
+      try {
+        const res  = await fetch('/api/admin/login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorEl.textContent = data.error || 'Login xatosi';
+          errorEl.classList.remove('hidden');
+          btn.textContent = 'Kirish';
+          btn.disabled    = false;
+          return;
+        }
+
+        localStorage.setItem('crm_admin_token', data.token);
+        window.location.href = '/';
+
+      } catch (err) {
+        errorEl.textContent = 'Tarmoq xatosi. Qayta urinib ko\'ring.';
+        errorEl.classList.remove('hidden');
+        btn.textContent = 'Kirish';
+        btn.disabled    = false;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClothesHub — Ulgurji Kiyim-Kechak Savdosi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    }
+
+    .product-card { transition: transform 0.2s, box-shadow 0.2s; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(79,70,229,.18); }
+
+    .modal-bg { display: none; }
+    .modal-bg.open { display: flex; }
+
+    .badge-category {
+      display: inline-block;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      padding: 3px 10px; border-radius: 9999px; text-transform: uppercase;
+    }
+
+    #toast { transition: opacity 0.3s, transform 0.3s; }
+    #toast.show { opacity: 1 !important; transform: translateY(0) !important; }
+
+    .nav-link { transition: color 0.15s; }
+    .nav-link:hover { color: #a5b4fc; }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans antialiased">
+
+<!-- ═══════════════════════ HEADER ═══════════════════════ -->
+<header class="bg-slate-900 text-white sticky top-0 z-40 shadow-lg">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+    <a href="/store.html" class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-black text-lg">C</div>
+      <div>
+        <span class="font-extrabold text-lg leading-none">ClothesHub</span>
+        <span class="block text-xs text-slate-400 leading-none mt-0.5">Ulgurji savdo platformasi</span>
+      </div>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="#products" class="nav-link text-sm font-medium text-slate-300">Mahsulotlar</a>
+      <a href="#how-it-works" class="nav-link text-sm font-medium text-slate-300">Qanday ishlaydi</a>
+      <a href="#contact" class="nav-link text-sm font-medium text-slate-300">Bog'lanish</a>
+      <a href="/login.html" class="nav-link text-sm font-medium text-slate-400">Admin →</a>
+    </nav>
+
+    <button onclick="openModal()"
+      class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-colors">
+      Ro'yxatdan o'tish
+    </button>
+  </div>
+</header>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<section class="hero-gradient text-white py-24 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+    <span class="inline-block bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 uppercase tracking-widest">
+      B2B Ulgurji Platforma
+    </span>
+    <h1 class="text-5xl md:text-6xl font-black leading-tight mb-6">
+      Sifatli kiyim-kechak<br/>
+      <span class="text-indigo-400">ulgurji narxlarda</span>
+    </h1>
+    <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+      Kiyim-kechak do'konlari, distribyutorlar va ulgurji xaridorlar uchun
+      ishonchli hamkor. Minimal buyurtma — maksimal sifat.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4">
+      <button onclick="openModal()"
+        class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3.5 rounded-xl font-bold text-base transition-colors shadow-lg shadow-indigo-500/30">
+        Hamkor bo'lish →
+      </button>
+      <a href="#products"
+        class="border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white px-8 py-3.5 rounded-xl font-semibold text-base transition-colors">
+        Mahsulotlarni ko'rish
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ STATS ═══════════════════════ -->
+<section class="bg-white border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div>
+      <p class="text-3xl font-black text-indigo-600">500+</p>
+      <p class="text-sm text-slate-500 font-medium mt-1">Mahsulot turi</p>
+    </div>
+    <div>
+      <p class="text-3xl font-black text-indigo-600">1,200+</p>
+      <p class="text-sm text-slate-500 font-medium mt-1">Faol hamkor</p>
+    </div>
+    <div>
+      <p class="text-3xl font-black text-indigo-600">14</p>
+      <p class="text-sm text-slate-500 font-medium mt-1">Viloyat bo'ylab yetkazib berish</p>
+    </div>
+    <div>
+      <p class="text-3xl font-black text-indigo-600">24/7</p>
+      <p class="text-sm text-slate-500 font-medium mt-1">Mijozlar xizmati</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PRODUCTS ═══════════════════════ -->
+<section id="products" class="py-20 px-6">
+  <div class="max-w-7xl mx-auto">
+
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-black text-slate-900 mb-3">Mahsulot katalogi</h2>
+      <p class="text-slate-500 text-lg">Ulgurji narxlar — minimal buyurtma miqdori bilan</p>
+    </div>
+
+    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- JS tomonidan to'ldiriladi -->
+      <div class="col-span-full text-center py-16 text-slate-400">
+        <svg class="w-8 h-8 animate-spin mx-auto mb-3 text-indigo-400" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+        </svg>
+        Mahsulotlar yuklanmoqda…
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ HOW IT WORKS ═══════════════════════ -->
+<section id="how-it-works" class="bg-slate-900 text-white py-20 px-6">
+  <div class="max-w-5xl mx-auto text-center mb-12">
+    <h2 class="text-4xl font-black mb-3">Qanday ishlaydi?</h2>
+    <p class="text-slate-400 text-lg">Buyurtma berishdan yetkazib olishgacha — 3 qadam</p>
+  </div>
+  <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+
+    <div class="bg-slate-800 rounded-2xl p-8 text-center border border-slate-700">
+      <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-black mx-auto mb-5">1</div>
+      <h3 class="text-xl font-bold mb-3">Ro'yxatdan o'ting</h3>
+      <p class="text-slate-400 text-sm leading-relaxed">Kompaniya ma'lumotlaringizni kiriting. Menejerimiz 24 soat ichida siz bilan bog'lanadi.</p>
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-8 text-center border border-slate-700">
+      <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-black mx-auto mb-5">2</div>
+      <h3 class="text-xl font-bold mb-3">Narx kelishuvi</h3>
+      <p class="text-slate-400 text-sm leading-relaxed">Miqdor va mahsulot turlariga qarab maxsus narxlar taklif qilamiz. Shartnoma imzolanadi.</p>
+    </div>
+
+    <div class="bg-slate-800 rounded-2xl p-8 text-center border border-slate-700">
+      <div class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center text-2xl font-black mx-auto mb-5">3</div>
+      <h3 class="text-xl font-bold mb-3">Yetkazib berish</h3>
+      <p class="text-slate-400 text-sm leading-relaxed">Buyurtma tayyorlanadi va O'zbekiston bo'ylab yetkazib beriladi. Sifat kafolatlangan.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ CONTACT ═══════════════════════ -->
+<section id="contact" class="py-20 px-6 bg-white">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="text-4xl font-black text-slate-900 mb-4">Hamkor bo'lishga tayyormisiz?</h2>
+    <p class="text-slate-500 text-lg mb-8">Hoziroq ro'yxatdan o'ting — menejerimiz siz bilan bog'lanadi</p>
+    <button onclick="openModal()"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-2xl font-bold text-lg transition-colors shadow-lg shadow-indigo-500/20">
+      Bepul ro'yxatdan o'tish →
+    </button>
+    <p class="text-sm text-slate-400 mt-4">Hech qanday to'lov talab qilinmaydi</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<footer class="bg-slate-900 text-slate-400 py-10 px-6 text-center text-sm">
+  <p class="font-bold text-white mb-1">ClothesHub — Ulgurji Kiyim-Kechak Platformasi</p>
+  <p>© 2026 ClothesHub. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<!-- ═══════════════════════ REGISTER MODAL ═══════════════════════ -->
+<div id="register-modal"
+  class="modal-bg fixed inset-0 bg-black/60 backdrop-blur-sm z-50 items-center justify-center p-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+
+    <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+      <div>
+        <h3 class="text-lg font-bold text-slate-800">Hamkor sifatida ro'yxatdan o'tish</h3>
+        <p class="text-xs text-slate-400 mt-0.5">Menejerimiz 24 soat ichida bog'lanadi</p>
+      </div>
+      <button onclick="closeModal()"
+        class="p-1.5 hover:bg-slate-100 rounded-xl transition-colors text-slate-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Success State -->
+    <div id="success-state" class="hidden p-8 text-center">
+      <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h4 class="text-xl font-bold text-slate-800 mb-2">Muvaffaqiyatli!</h4>
+      <p class="text-slate-500 text-sm leading-relaxed mb-6">Arizangiz qabul qilindi. Menejerimiz <strong>24 soat</strong> ichida siz bilan bog'lanadi va narxlar haqida ma'lumot beradi.</p>
+      <button onclick="closeModal()"
+        class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+        Yaxshi, tushunarli
+      </button>
+    </div>
+
+    <!-- Form State -->
+    <form id="register-form" onsubmit="submitRegister(event)" class="p-6 space-y-4" novalidate>
+
+      <div id="reg-error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium"></div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Ism Familiya <span class="text-red-500">*</span></label>
+          <input type="text" id="reg-name" placeholder="Jasur Toshmatov"
+            class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-slate-700 mb-1.5">Kompaniya nomi</label>
+          <input type="text" id="reg-company" placeholder="Toshkent Textile"
+            class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email <span class="text-red-500">*</span></label>
+        <input type="email" id="reg-email" placeholder="jasur@kompaniya.uz"
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Telefon raqam</label>
+        <input type="tel" id="reg-phone" placeholder="+998 90 123 45 67"
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition" />
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Qaysi mahsulot qiziqtiradi?</label>
+        <select id="reg-product"
+          class="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition cursor-pointer">
+          <option value="">— Tanlang —</option>
+          <option>Erkaklar biznes ko'ylagi</option>
+          <option>Ayollar bluzasi</option>
+          <option>Denim shim (uniseks)</option>
+          <option>Sport kostyum to'plami</option>
+          <option>Qishki kurtka</option>
+          <option>Paxta futbolka (uniseks)</option>
+          <option>Biznes kostyum (erkaklar)</option>
+          <option>Yozgi ko'ylak (ayollar)</option>
+          <option>Barcha mahsulotlar</option>
+        </select>
+      </div>
+
+      <div class="flex gap-3 pt-1">
+        <button type="button" onclick="closeModal()"
+          class="flex-1 border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-slate-50 transition-colors">
+          Bekor qilish
+        </button>
+        <button type="submit" id="submit-btn"
+          class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+          Ariza yuborish
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 opacity-0 translate-y-4">
+  <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl text-sm font-semibold flex items-center gap-2.5">
+    <svg class="w-4 h-4 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <span id="toast-msg">Yuborildi</span>
+  </div>
+</div>
+
+<script src="store.js"></script>
+</body>
+</html>
