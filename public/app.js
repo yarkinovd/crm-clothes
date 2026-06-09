@@ -87,7 +87,7 @@ const showToast = (message, type = 'success') => {
 // ─── Navigatsiya ──────────────────────────────────────────────────────────────
 
 const PAGE_META = {
-  dashboard: { title: 'Boshqaruvvv paneli',  subtitle: 'Savdo ko\'rsatkichlari va asosiy metrikalar' },
+  dashboard: { title: 'Boshqaruv paneli',  subtitle: 'Savdo ko\'rsatkichlari va asosiy metrikalar' },
   leads:     { title: 'Mijozlar',           subtitle: 'Barcha mijozlarni boshqarish va kuzatish' },
   pipeline:  { title: 'Savdo yo\'li',       subtitle: 'Kanban board orqali savdo jarayonini kuzating' },
 };
