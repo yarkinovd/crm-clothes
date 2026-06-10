@@ -21,12 +21,23 @@ services:
       retries: 6
       start_period: 10s
 
+  caddy:
+    image: caddy:alpine
+    container_name: crm_caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+    depends_on:
+      - web
+
   web:
     build: .
     container_name: crm_web
     restart: always
-    ports:
-      - "80:3000"
     environment:
       PGUSER:     crmuser
       PGHOST:     db
@@ -40,4 +51,6 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  caddy_data:
     driver: local

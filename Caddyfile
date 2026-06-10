@@ -1,0 +1,3 @@
+crm.yarkinovd.uz {
+    reverse_proxy web:3000
+}
